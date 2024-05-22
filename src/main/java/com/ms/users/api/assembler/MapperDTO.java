@@ -1,6 +1,7 @@
 package com.ms.users.api.assembler;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.record.RecordModule;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -13,7 +14,9 @@ public class MapperDTO {
     private ModelMapper modelMapper;
 
     public MapperDTO(ModelMapper modelMapper) {
+
         this.modelMapper = modelMapper;
+        this.modelMapper.registerModule(new RecordModule());
     }
 
     /**
