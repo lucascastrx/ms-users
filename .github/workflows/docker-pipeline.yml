@@ -7,7 +7,6 @@ on:
 
 jobs:
   build_image:
-    runs-on: ubuntu-latest
     uses: ./.github/workflows/tests-pipeline.yml
 
 
