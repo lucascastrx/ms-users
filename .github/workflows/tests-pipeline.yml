@@ -49,7 +49,7 @@ jobs:
       - name: Build with Maven
 #        id: step_jar
         run: |
-          mvn -B clean package --file pom.xml >> $GITHUB_OUTPUT
+          mvn -B clean package --file pom.xml
 #          mvn -B verify --file pom.xml
       - name: Upload jar file
         uses: actions/upload-artifact@v4
