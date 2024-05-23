@@ -39,6 +39,7 @@ jobs:
         with:
           name: msusers
           path: .
+
       - name: Log in to Docker Hub
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
         with:
@@ -50,6 +51,14 @@ jobs:
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
           images: lvcvx/msusers
+
+      - name: Display structure of downloaded files
+        run: ls -R
+
+      - name: Display structure of downloaded files
+        run: ls
+
+
 
       - name: Build and push Docker image
         id: push
