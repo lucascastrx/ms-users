@@ -5,7 +5,7 @@ on:
     types: [published]
 
 jobs:
-  push-image:
+  push_image:
     runs-on: ubuntu-latest
 
     permissions:
