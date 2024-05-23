@@ -52,11 +52,11 @@ jobs:
           mvn -B clean package --file pom.xml >> $GITHUB_OUTPUT
 #          mvn -B verify --file pom.xml
       - name: Upload jar file
-          uses: actions/upload-artifact@v4
-          with:
-            name: msusers
-            path: target/*.jar
-            retention-days: 10
+        uses: actions/upload-artifact@v4
+        with:
+          name: msusers
+          path: target/*.jar
+          retention-days: 10
 
 #      - name: Build Docker image
 #        run: docker build . -t msusers:latest
