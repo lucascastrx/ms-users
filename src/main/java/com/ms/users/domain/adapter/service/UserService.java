@@ -1,4 +1,4 @@
-package com.ms.users.domain.service;
+package com.ms.users.domain.adapter.service;
 
 import com.ms.users.domain.model.User;
 import com.ms.users.domain.repository.UserRepository;

@@ -7,7 +7,7 @@ import com.ms.users.api.dto.user.input.UserPasswordDTO;
 import com.ms.users.api.dto.user.output.UserDTO;
 import com.ms.users.domain.model.User;
 import com.ms.users.domain.repository.UserRepository;
-import com.ms.users.domain.service.UserService;
+import com.ms.users.domain.adapter.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
