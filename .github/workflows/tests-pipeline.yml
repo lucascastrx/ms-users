@@ -1,5 +1,3 @@
-
-#GITHUB ACTIONS PIPELINE
 name: Pipeline for Tests and Deploy Automation in Java
 
 on:
@@ -7,6 +5,17 @@ on:
     branches: [ main, development ]
   pull_request:
     branches: [ main, development ]
+  workflow_call:
+
+env:
+  SERVER_PORT: ${{ vars.SERVER_PORT}}
+  DATABASE_NAME: ${{ vars.DATABASE_NAME}}
+  DATABASE_USER: ${{ vars.DATABASE_USER}}
+  DATABASE_PASSWORD: ${{ vars.DATABASE_PASSWORD}}
+#    outputs:
+#      jar_snapshot:
+#        description: "Snapshot of built jar"
+#        value: ${{jobs.tests_job.outputs.file_output}}
 
 jobs:
   tests_job:
@@ -18,8 +27,8 @@ jobs:
       postgres:
         image: postgres
         env:
-          POSTGRES_DB: msusers
-          POSTGRES_PASSWORD: admin
+          POSTGRES_DB: ${{env.DATABASE_NAME}}
+          POSTGRES_PASSWORD: ${{env.DATABASE_PASSWORD}}
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -28,6 +37,8 @@ jobs:
         ports:
           - 5432:5432
 
+#    outputs:
+#      file_output: ${{steps.step_jar.outputs.file}}
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v4
@@ -40,10 +51,16 @@ jobs:
           cache: maven
 
       - name: Build with Maven
+#        id: step_jar
         run: |
           mvn -B clean package --file pom.xml
 #          mvn -B verify --file pom.xml
-          
+      - name: Upload jar file
+        uses: actions/upload-artifact@v4
+        with:
+          name: msusers
+          path: target/*.jar
+          retention-days: 10
 
 #      - name: Build Docker image
 #        run: docker build . -t msusers:latest
