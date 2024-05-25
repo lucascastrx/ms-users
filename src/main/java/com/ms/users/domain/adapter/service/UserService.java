@@ -1,24 +1,23 @@
-package com.ms.users.domain.service;
+package com.ms.users.domain.adapter.service;
 
 import com.ms.users.domain.model.User;
-import com.ms.users.domain.repository.UserRepository;
+import com.ms.users.domain.port.repository.UserRepositoryPort;
+import com.ms.users.domain.port.service.UserServicePort;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
-public class UserService {
+public class UserService implements UserServicePort {
 
     /**
      * Inicialmente usando exceptions padrões do java mas depois
      * podemos trabalhar em criar algumas customizadas
      */
 
-    private final UserRepository userRepository;
+    private final UserRepositoryPort userRepository;
 
-    public UserService(final UserRepository userRepository) {
+    public UserService(final UserRepositoryPort userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -30,16 +29,18 @@ public class UserService {
      * @param user
      * @return user
      */
+    @Override
     public User addUser(User user){
 
         var userOpt = userRepository.findByEmail(user.getEmail());
 
-        if(userOpt.isPresent() && userOpt.get().equals(user))
+        if(userOpt.isPresent() && userOpt.get().getEmail().equals(user.getEmail()))
             throw new IllegalStateException("This email is already in use");
 
         return userRepository.save(user);
     }
 
+    @Override
     public User findById(Long id){
         return userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
@@ -56,6 +57,7 @@ public class UserService {
         }
     }
 
+    @Override
     public void changePassword(Long id, String currentPassword, String newPassword){
         var user = findById(id);
 
@@ -64,5 +66,6 @@ public class UserService {
         }
 
         user.setPassword(newPassword);
+        userRepository.save(user);
     }
 }

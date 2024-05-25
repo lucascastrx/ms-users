@@ -1,0 +1,77 @@
+name: Publish Docker image to registry.
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build_image:
+    uses: ./.github/workflows/tests-pipeline.yml
+
+
+  push_image:
+    needs: build_image
+    runs-on: ubuntu-latest
+
+    permissions:
+      packages: write
+      contents: read
+      attestations: write
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+#
+#      - name: Set up JDK 17
+#        uses: actions/setup-java@v3
+#        with:
+#          java-version: '17'
+#          distribution: 'temurin'
+#          cache: maven
+#
+#      - name: Build with Maven
+#        run: |
+#          mvn -B clean package --file pom.xml
+      - name: Download jar artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: msusers
+          path: .
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        with:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: lvcvx/msusers
+
+      - name: Display structure of downloaded files
+        run: ls -R
+
+      - name: Display structure of downloaded files
+        run: ls
+
+
+
+      - name: Build and push Docker image
+        id: push
+        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+
+
+#      - name: Generate artifact attestation
+#        uses: actions/attest-build-provenance@v1
+#        with:
+#          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
+#          subject-digest: ${{ steps.push.outputs.digest }}
+#          push-to-registry: true
+
