@@ -1,11 +1,13 @@
 package com.ms.users;
 
 import com.ms.users.domain.model.User;
-import com.ms.users.domain.service.UserService;
+import com.ms.users.domain.port.service.UserServicePort;
+import com.ms.users.infra.adapter.repository.UserRepositoryAccess;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -14,7 +16,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class SignUpUserTest {
 
     @Autowired
-    private UserService userService;
+    private UserServicePort userService;
+
+    @Autowired
+    private UserRepositoryAccess databaseAccess;
+
+    @BeforeEach
+    public void setUp(){
+        databaseAccess.deleteAllInBatch();
+    }
+
 
     @Test
     public void shouldSucceedWhenUserSignUpWithAllData(){

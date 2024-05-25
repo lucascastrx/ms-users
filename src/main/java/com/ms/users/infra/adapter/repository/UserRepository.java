@@ -23,8 +23,10 @@ public class UserRepository implements UserRepositoryPort {
 
     @Override
     public Optional<User> findByEmail(String email){
-        var userModel = userRepositoryAccess.findByEmail(email).get();
-        var user = mapperDTO.transform(userModel, User.class);
+        var userModel = userRepositoryAccess.findByEmail(email);
+        if(userModel.isEmpty()) return Optional.empty();
+
+        var user = mapperDTO.transform(userModel.get(), User.class);
         return Optional.of(user);
     }
 
