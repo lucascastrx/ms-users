@@ -34,7 +34,7 @@ public class UserService implements UserServicePort {
 
         var userOpt = userRepository.findByEmail(user.getEmail());
 
-        if(userOpt.isPresent() && userOpt.get().equals(user))
+        if(userOpt.isPresent() && userOpt.get().getEmail().equals(user.getEmail()))
             throw new IllegalStateException("This email is already in use");
 
         return userRepository.save(user);
