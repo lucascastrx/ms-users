@@ -6,8 +6,9 @@ import com.ms.users.api.dto.user.input.UserInputDTO;
 import com.ms.users.api.dto.user.input.UserPasswordDTO;
 import com.ms.users.api.dto.user.output.UserDTO;
 import com.ms.users.domain.model.User;
-import com.ms.users.domain.repository.UserRepository;
-import com.ms.users.domain.service.UserService;
+import com.ms.users.domain.port.service.UserServicePort;
+import com.ms.users.infra.adapter.repository.UserRepositoryAccess;
+import com.ms.users.domain.adapter.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +18,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    private final UserRepository userRepository;
-    private final UserService userService;
+    private final UserRepositoryAccess userRepository;
+    private final UserServicePort userService;
     private final MapperDTO mapperDTO;
 
-    public UserController(UserRepository userRepository, UserService userService, MapperDTO mapperDTO) {
+    public UserController(UserRepositoryAccess userRepository, UserServicePort userService, MapperDTO mapperDTO) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mapperDTO = mapperDTO;

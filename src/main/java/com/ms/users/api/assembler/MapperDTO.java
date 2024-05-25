@@ -1,5 +1,7 @@
 package com.ms.users.api.assembler;
 
+import com.ms.users.api.dto.user.output.UserDTO;
+import com.ms.users.domain.model.User;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.record.RecordModule;
 import org.springframework.stereotype.Component;
