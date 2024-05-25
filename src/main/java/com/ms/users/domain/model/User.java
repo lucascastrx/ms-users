@@ -1,10 +1,5 @@
 package com.ms.users.domain.model;
 
-import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
-
 public class User {
 
     private Long id;
