@@ -81,7 +81,7 @@ public class WalletCreationTest {
 
         wallet = walletService.addWallet(wallet, this.user.getId());
 
-        var secondWallet = walletService.retrieveWallet(this.user.getId());
+        var secondWallet = walletService.retrieveWalletByUser(this.user.getId());
 
         assertThat(secondWallet).usingRecursiveComparison().isEqualTo(wallet);
     }
