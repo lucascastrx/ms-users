@@ -1,10 +1,10 @@
 package com.ms.users.domain.model;
 
 public class Wallet {
-    Long id;
+    private Long id;
 
-    double balance;
-    User user;
+    private double balance;
+    private User user;
 
     public Wallet() {
     }

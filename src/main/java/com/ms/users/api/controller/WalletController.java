@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/users/{userId}/wallet")
+@RequestMapping("/users/{userId}/wallets")
 public class WalletController {
 
     private final WalletServicePort walletService;
@@ -23,13 +23,21 @@ public class WalletController {
 
     @GetMapping
     public WalletDTO retrieveWallet(@PathVariable Long userId){
-        return mapper.transform(walletService.retrieveWallet(userId), WalletDTO.class);
+        return mapper.transform(walletService.retrieveWalletByUser(userId), WalletDTO.class);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public WalletDTO addWallet(@PathVariable Long userId, @RequestBody @Valid WalletBalanceDTO walletBalanceDTO){
         var wallet = mapper.transform(walletBalanceDTO, Wallet.class);
+        wallet = walletService.addWallet(wallet, userId);
+        return mapper.transform(wallet, WalletDTO.class);
+    }
+
+    @PutMapping("/{walletId}")
+    public WalletDTO updateWallet(@PathVariable Long userId, @PathVariable Long walletId, @RequestBody @Valid WalletBalanceDTO walletBalanceDTO){
+        var wallet = walletService.retrieveWalletByUser(userId);
+        mapper.copyToDomain(walletBalanceDTO, wallet);
         wallet = walletService.addWallet(wallet, userId);
         return mapper.transform(wallet, WalletDTO.class);
     }

@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class WalletDTO {
-    Long id;
-    double balance;
-    User user;
+    private Long id;
+    private double balance;
+    private User user;
 }

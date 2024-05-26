@@ -6,5 +6,7 @@ public interface WalletServicePort {
 
     Wallet addWallet(Wallet wallet, Long userId);
 
-    Wallet retrieveWallet(Long userId);
+    Wallet retrieveWalletByUser(Long userId);
+
+    Wallet findById(Long walletId);
 }
