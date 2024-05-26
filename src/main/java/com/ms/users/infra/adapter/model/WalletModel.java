@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.Set;
+
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "TB_WALLET")
@@ -18,6 +20,9 @@ public class WalletModel {
 
     private double balance;
 
-    @OneToOne(orphanRemoval = true)
+    @OneToOne(optional = false, cascade = CascadeType.REMOVE)
     private UserModel user;
+
+    @OneToMany(mappedBy = "wallet", cascade = CascadeType.REMOVE)
+    private Set<StakeModel> stakes;
 }

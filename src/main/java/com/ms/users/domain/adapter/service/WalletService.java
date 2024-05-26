@@ -4,6 +4,8 @@ import com.ms.users.domain.model.Wallet;
 import com.ms.users.domain.port.repository.WalletRepositoryPort;
 import com.ms.users.domain.port.service.UserServicePort;
 import com.ms.users.domain.port.service.WalletServicePort;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 
 public class WalletService implements WalletServicePort {
 
@@ -16,6 +18,7 @@ public class WalletService implements WalletServicePort {
     }
 
     @Override
+//    @Transactional
     public Wallet addWallet(Wallet wallet, Long userId) {
 
         if (wallet.getBalance() < 0)
@@ -28,7 +31,12 @@ public class WalletService implements WalletServicePort {
     }
 
     @Override
-    public Wallet retrieveWallet(Long userId) {
+    public Wallet retrieveWalletByUser(Long userId) {
         return walletRepository.findByUserId(userId);
+    }
+
+    @Override
+    public Wallet findById(Long walletId){
+        return walletRepository.findById(walletId).orElseThrow(EntityNotFoundException::new);
     }
 }

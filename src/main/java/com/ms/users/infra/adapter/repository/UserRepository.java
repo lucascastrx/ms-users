@@ -5,6 +5,7 @@ import com.ms.users.domain.model.User;
 import com.ms.users.domain.port.repository.UserRepositoryPort;
 import com.ms.users.infra.adapter.model.UserModel;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -39,6 +40,7 @@ public class UserRepository implements UserRepositoryPort {
     }
 
     @Override
+//    @Transactional
     public Optional<User> findById(Long id){
         var userModel = userRepositoryAccess.findById(id);
         var user = mapperDTO.transform(userModel, User.class);

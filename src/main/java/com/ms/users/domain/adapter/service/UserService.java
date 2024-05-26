@@ -37,7 +37,9 @@ public class UserService implements UserServicePort {
         if(userOpt.isPresent() && userOpt.get().getEmail().equals(user.getEmail()))
             throw new IllegalStateException("This email is already in use");
 
-        return userRepository.save(user);
+        user = userRepository.save(user);
+        return user;
+
     }
 
     @Override
@@ -56,6 +58,8 @@ public class UserService implements UserServicePort {
             throw new RuntimeException();
         }
     }
+
+
 
     @Override
     public void changePassword(Long id, String currentPassword, String newPassword){
