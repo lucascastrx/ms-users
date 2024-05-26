@@ -40,7 +40,10 @@ public class StakeTest {
     private Wallet wallet;
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
+        databaseAccess.deleteAllInBatch();
+        walletAccess.deleteAllInBatch();
+        userAccess.deleteAllInBatch();
 
         this.user = new User();
         this.user.setName("Lucas");
@@ -54,16 +57,8 @@ public class StakeTest {
         this.wallet = walletService.addWallet(wallet, this.user.getId());
     }
 
-    @AfterEach
-    public void cleanUp(){
-        if(user != null){
-            walletAccess.deleteById(this.wallet.getId());
-            userAccess.deleteById(this.user.getId());
-        }
-    }
-
     @Test
-    public void shouldSucceedWhenCreateStakeWithAllData(){
+    public void shouldSucceedWhenCreateStakeWithAllData() {
         var stake = new Stake();
         stake.setName("Stake 1un");
         stake.setAmount(50.00);
@@ -75,9 +70,9 @@ public class StakeTest {
     }
 
     @Test
-    public void shoulFailWhenFetchingNonexistingStake(){
+    public void shoulFailWhenFetchingNonexistingStake() {
         EntityNotFoundException error = assertThrows(EntityNotFoundException.class,
-                ()-> stakeService.findById(1L));
+                () -> stakeService.findById(1L));
         assertThat(error).isNotNull();
     }
 }

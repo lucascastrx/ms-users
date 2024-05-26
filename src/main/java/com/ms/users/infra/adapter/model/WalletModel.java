@@ -23,6 +23,6 @@ public class WalletModel {
     @OneToOne(optional = false, cascade = CascadeType.REMOVE)
     private UserModel user;
 
-    @OneToMany(mappedBy = "wallet", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "wallet", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<StakeModel> stakes;
 }
