@@ -3,6 +3,7 @@ package com.ms.users.domain.adapter.service;
 import com.ms.users.domain.model.User;
 import com.ms.users.domain.port.repository.UserRepositoryPort;
 import com.ms.users.domain.port.service.UserServicePort;
+import com.ms.users.infra.producer.UserProducer;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -16,9 +17,11 @@ public class UserService implements UserServicePort {
      */
 
     private final UserRepositoryPort userRepository;
+    private final UserProducer userProducer;
 
-    public UserService(final UserRepositoryPort userRepository) {
+    public UserService(final UserRepositoryPort userRepository, UserProducer userProducer) {
         this.userRepository = userRepository;
+        this.userProducer = userProducer;
     }
 
 
@@ -29,7 +32,7 @@ public class UserService implements UserServicePort {
      * @param user
      * @return user
      */
-    @Override
+    @Override @Transactional
     public User addUser(User user){
 
         var userOpt = userRepository.findByEmail(user.getEmail());
@@ -38,6 +41,9 @@ public class UserService implements UserServicePort {
             throw new IllegalStateException("This email is already in use");
 
         user = userRepository.save(user);
+
+        userProducer.publishMessage(user);
+
         return user;
 
     }
