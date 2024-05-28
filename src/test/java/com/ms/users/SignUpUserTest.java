@@ -56,6 +56,7 @@ public class SignUpUserTest {
         secondUser.setUsername("lvcvx");
         secondUser.setEmail("luukascastro@gmail.com");
         secondUser.setPassword("lucas");
+        System.out.println("TESTE");
 
 
         IllegalStateException error = assertThrows(IllegalStateException.class,
