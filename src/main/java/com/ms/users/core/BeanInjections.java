@@ -9,6 +9,7 @@ import com.ms.users.domain.port.repository.WalletRepositoryPort;
 import com.ms.users.domain.port.service.StakeServicePort;
 import com.ms.users.domain.port.service.UserServicePort;
 import com.ms.users.domain.port.service.WalletServicePort;
+import com.ms.users.infra.producer.UserProducer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,8 +17,8 @@ import org.springframework.context.annotation.Configuration;
 public class BeanInjections {
 
     @Bean
-    public UserServicePort userService(UserRepositoryPort userRepository){
-        return new UserService(userRepository);
+    public UserServicePort userService(UserRepositoryPort userRepository, UserProducer userProducer){
+        return new UserService(userRepository, userProducer);
     }
 
     @Bean
