@@ -39,4 +39,22 @@ public class WalletService implements WalletServicePort {
     public Wallet findById(Long walletId){
         return walletRepository.findById(walletId).orElseThrow(EntityNotFoundException::new);
     }
+
+    @Override
+    public Wallet deposit(Wallet wallet, double amount) {
+        if(amount > 0)
+            throw new IllegalStateException("The amount deposited should be positive");
+
+        wallet.setBalance(wallet.getBalance() + amount);
+        return wallet;
+    }
+
+    @Override
+    public Wallet withdraw(Wallet wallet, double amount) {
+        if(amount > 0)
+            throw new IllegalStateException("The amount withdrawn should be positive");
+
+        wallet.setBalance(wallet.getBalance() - amount);
+        return wallet;
+    }
 }

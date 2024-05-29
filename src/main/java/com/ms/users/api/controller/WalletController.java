@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/users/{userId}/wallets")
+@RequestMapping("/users/{userId}/wallet")
 public class WalletController {
 
     private final WalletServicePort walletService;
@@ -34,10 +34,18 @@ public class WalletController {
         return mapper.transform(wallet, WalletDTO.class);
     }
 
-    @PutMapping("/{walletId}")
-    public WalletDTO updateWallet(@PathVariable Long userId, @PathVariable Long walletId, @RequestBody @Valid WalletBalanceDTO walletBalanceDTO){
+    @PutMapping("/deposit")
+    public WalletDTO depositOnWallet(@PathVariable Long userId, @RequestBody @Valid WalletBalanceDTO walletBalanceDTO){
         var wallet = walletService.retrieveWalletByUser(userId);
-        mapper.copyToDomain(walletBalanceDTO, wallet);
+        wallet = walletService.deposit(wallet, walletBalanceDTO.balance());
+        wallet = walletService.addWallet(wallet, userId);
+        return mapper.transform(wallet, WalletDTO.class);
+    }
+
+    @PutMapping("/withdraw")
+    public WalletDTO withdrawFromWallet(@PathVariable Long userId, @RequestBody @Valid WalletBalanceDTO walletBalanceDTO){
+        var wallet = walletService.retrieveWalletByUser(userId);
+        wallet = walletService.withdraw(wallet, walletBalanceDTO.balance());
         wallet = walletService.addWallet(wallet, userId);
         return mapper.transform(wallet, WalletDTO.class);
     }
