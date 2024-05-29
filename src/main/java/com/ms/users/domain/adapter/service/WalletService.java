@@ -42,7 +42,7 @@ public class WalletService implements WalletServicePort {
 
     @Override
     public Wallet deposit(Wallet wallet, double amount) {
-        if(amount < 0)
+        if(amount > 0)
             throw new IllegalStateException("The amount deposited should be positive");
 
         wallet.setBalance(wallet.getBalance() + amount);
