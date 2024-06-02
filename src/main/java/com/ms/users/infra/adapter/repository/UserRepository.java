@@ -20,8 +20,6 @@ public class UserRepository implements UserRepositoryPort {
         this.mapperDTO = mapperDTO;
     }
 
-    //Colocar mesmos metodos que eram acessados pela interface que estende de jparepository aqui e puxar diretamente por aqui
-
     @Override
     public Optional<User> findByEmail(String email){
         var userModel = userRepositoryAccess.findByEmail(email);
@@ -40,7 +38,6 @@ public class UserRepository implements UserRepositoryPort {
     }
 
     @Override
-//    @Transactional
     public Optional<User> findById(Long id){
         var userModel = userRepositoryAccess.findById(id);
         var user = mapperDTO.transform(userModel, User.class);
